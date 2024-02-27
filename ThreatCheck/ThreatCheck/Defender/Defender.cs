@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -10,22 +10,24 @@ namespace ThreatCheck
         byte[] FileBytes;
         string FilePath;
 
-        public Defender(byte[] file)
+        public Defender(byte[] file, string base_folder)
         {
             FileBytes = file;
+            FilePath = base_folder;
         }
 
         public void AnalyzeFile()
         {
-            if (!Directory.Exists(@"C:\Temp"))
+            if (!Directory.Exists(FilePath))
             {
 #if DEBUG
-                CustomConsole.WriteDebug(@"C:\Temp doesn't exist. Creating it...");
+                CustomConsole.WriteDebug(FilePath + " doesn't exist. Creating it...");
 #endif
-                Directory.CreateDirectory(@"C:\Temp");
+                Directory.CreateDirectory(FilePath);
+               
             }
 
-            FilePath = Path.Combine(@"C:\Temp", "file.exe");
+            FilePath = Path.Combine(FilePath, "file.exe");
             File.WriteAllBytes(FilePath, FileBytes);
 
             var status = ScanFile(FilePath);
@@ -75,6 +77,7 @@ namespace ThreatCheck
                     Buffer.BlockCopy(tmpArray, 0, splitArray, 0, tmpArray.Length);
                 }
             }
+            if(File.Exists(FilePath)) File.Delete(FilePath);// clean
         }
 
         public DefenderScanResult ScanFile(string file, bool getsig = false)
