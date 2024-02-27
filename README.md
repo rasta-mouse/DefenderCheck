@@ -8,6 +8,7 @@ C:\>ThreatCheck.exe --help
   -e, --engine    (Default: Defender) Scanning engine. Options: Defender, AMSI
   -f, --file      Analyze a file on disk
   -u, --url       Analyze a file from a URL
+  -b, --base-folder    (Default: C:\Temp) The path to the folder where the file will be copied and analyzed. Should be a Defender exclusion folder
   --help          Display this help screen.
   --version       Display version information.
 ```
