@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,10 @@ namespace ThreatCheck
 
             [Option('u', "url", Required = false, HelpText = "Analyze a file from a URL")]
             public string InUrl { get; set; }
+
+            [Option('b', "base-folder", Default = @"C:\Temp", Required = false, HelpText = "The path to the " +
+                @"folder where the file will be copied and analyzed. Should be a Defender exclusion folder")]
+            public string InBF { get; set; }
         }
 
         public enum ScanningEngine
@@ -46,6 +50,8 @@ namespace ThreatCheck
         static void RunOptions(Options opts)
         {
             var file = new byte[] { };
+            string base_folder = "";
+
             var engine = (ScanningEngine)Enum.Parse(typeof(ScanningEngine), opts.Engine, true);
 
             if (!string.IsNullOrEmpty(opts.InUrl))
@@ -66,6 +72,7 @@ namespace ThreatCheck
                 if (File.Exists(opts.InFile))
                 {
                     file = File.ReadAllBytes(opts.InFile);
+                    base_folder = opts.InBF;
                 }
                 else
                 {
@@ -82,7 +89,7 @@ namespace ThreatCheck
             switch (engine)
             {
                 case ScanningEngine.Defender:
-                    ScanWithDefender(file);
+                    ScanWithDefender(file,base_folder);
                     break;
                 case ScanningEngine.Amsi:
                     ScanWithAmsi(file);
@@ -108,9 +115,9 @@ namespace ThreatCheck
             }
         }
 
-        static void ScanWithDefender(byte[] file)
+        static void ScanWithDefender(byte[] file, string bf)
         {
-            var defender = new Defender(file);
+            var defender = new Defender(file, bf);
             defender.AnalyzeFile();
         }
 
