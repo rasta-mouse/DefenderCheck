@@ -36,7 +36,7 @@ C:\Users\Rasta>ThreatCheck.exe -f Downloads\Grunt.bin -e AMSI
 000000E0   00 79 00 70 00 74 00 65  00 64 00 4D 00 65 00 73   ·y·p·t·e·d·M·e·s
 000000F0   00 73 00 61 00 67 00 65  00 22 00 3A 00 22 00 7B   ·s·a·g·e·"·:·"·{
 ```
-### File locked by Defender error
+### Bypaas file locked by Defender error
 ```text
 ThreatCheck.exe -f .\shell.exe
 [*] C:\Temp doesn't exist. Creating it...
