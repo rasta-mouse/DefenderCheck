@@ -1,0 +1,34 @@
+# This is a template GitHub Action YAML file for building .NET projects. 
+# Handy for forking .NET assembly projects and building easily without VS.
+# Make sure to replace "MyAssembly" with the name of the project!
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.*
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ThreatCheck.exe
+        path: D:\a\ThreatCheck\ThreatCheck\ThreatCheck\bin\Release\ThreatCheck.exe
